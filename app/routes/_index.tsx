@@ -1,7 +1,7 @@
-import { Ai } from '@cloudflare/ai'
 import { json } from '@remix-run/cloudflare'
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare'
 import { useLoaderData } from '@remix-run/react'
+import { generateAiResponse } from '~/utils/ai'
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,17 +17,10 @@ export interface Env {
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
   const env = context.env as Env
-  const ai = new Ai(env.AI)
-
-  const systemPrompt = 'Answer within 100 words.'
-  const question = 'How to make a chat app?'
-
-  const { response } = await ai.run('@cf/meta/llama-2-7b-chat-int8', {
-    messages: [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: question },
-    ],
-  })
+  const response = await generateAiResponse(
+    env.AI,
+    'How to make an AI chat app?'
+  )
 
   return json({ response })
 }
