@@ -12,6 +12,7 @@ export const meta: MetaFunction = () => {
 
 export interface Env {
   AI: any
+  DB: D1Database
 }
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {

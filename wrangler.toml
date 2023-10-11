@@ -13,3 +13,8 @@ compatibility_date = "2023-04-20"
 
 [ai]
 binding = "AI"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aichat-db"
+database_id = "fb016ee8-12a7-4e20-a4e9-abb858163830"
