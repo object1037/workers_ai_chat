@@ -1,18 +1,17 @@
-import type { SelectMessage } from '~/utils/db.server'
 import styles from './message.module.css'
-import type { SerializeFrom } from '@remix-run/cloudflare'
 import { clsx } from 'clsx'
 
-export const Message = (props: { message: SerializeFrom<SelectMessage> }) => {
+export const Message = ({
+  isUser,
+  children,
+}: {
+  isUser: boolean
+  children: React.ReactNode
+}) => {
   return (
-    <div
-      className={clsx(
-        styles.root,
-        props.message.isUser ? styles.user : styles.ai
-      )}
-    >
-      <div className={styles.icon}>{props.message.isUser ? '🤓' : '🧠'}</div>
-      <p className={styles.message}>{props.message.message}</p>
+    <div className={clsx(styles.root, isUser ? styles.user : styles.ai)}>
+      <div className={styles.icon}>{isUser ? '🤓' : '🧠'}</div>
+      <p className={styles.message}>{children}</p>
     </div>
   )
 }

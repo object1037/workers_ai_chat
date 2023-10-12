@@ -5,6 +5,7 @@ import type {
   MetaFunction,
 } from '@remix-run/cloudflare'
 import { useFetcher, useLoaderData } from '@remix-run/react'
+import { Caret } from '~/components/caret'
 import { Message } from '~/components/message'
 import { generateAiResponse } from '~/utils/ai.server'
 import { addMessage, getMessages } from '~/utils/db.server'
@@ -39,12 +40,16 @@ export default function Index() {
         <button type="submit">Reset chat</button>
       </fetcher.Form>
       {messages.map((message) => (
-        <Message key={message.id} message={message} />
+        <Message key={message.id} isUser={message.isUser}>
+          {message.message}
+        </Message>
       ))}
       {fetcher.state !== 'idle' && typeof prompt === 'string' && (
         <>
-          <Message message={{ id: 0, message: prompt, isUser: true }} />
-          <p>loading...</p>
+          <Message isUser={true}>{prompt}</Message>
+          <Message isUser={false}>
+            <Caret />
+          </Message>
         </>
       )}
       <fetcher.Form method="post">
