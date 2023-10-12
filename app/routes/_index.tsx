@@ -33,6 +33,9 @@ export default function Index() {
 
   return (
     <div>
+      <fetcher.Form method="post" action="/reset">
+        <button type="submit">Reset chat</button>
+      </fetcher.Form>
       {messages.map((message) => (
         <p
           key={message.id}
@@ -41,6 +44,12 @@ export default function Index() {
           {message.message}
         </p>
       ))}
+      {fetcher.state !== 'idle' && (
+        <>
+          <p>{String(fetcher.formData?.get('prompt'))}</p>
+          <p>loading...</p>
+        </>
+      )}
       <fetcher.Form method="post">
         <input type="text" name="prompt" />
       </fetcher.Form>
@@ -56,7 +65,10 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
     throw new Response('Invalid prompt', { status: 400 })
   }
 
-  const aiResponse = await generateAiResponse(env.AI, body.prompt)
+  const chatContext = (await getMessages(env.DB))
+    .map((message) => `${message.isUser ? 'user' : 'ai'}: ${message.message}`)
+    .join('\n')
+  const aiResponse = await generateAiResponse(env.AI, chatContext, body.prompt)
 
   if (typeof aiResponse !== 'string') {
     throw new Response('Invalid AI response', { status: 500 })
