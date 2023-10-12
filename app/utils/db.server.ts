@@ -2,6 +2,7 @@ import { drizzle } from 'drizzle-orm/d1'
 import { chat } from '~/schema'
 
 export type InsertMessage = typeof chat.$inferInsert
+export type SelectMessage = typeof chat.$inferSelect
 
 export const getMessages = async (db_binding: D1Database) => {
   const db = drizzle(db_binding)

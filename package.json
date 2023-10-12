@@ -17,6 +17,7 @@
     "@remix-run/cloudflare": "^2.0.1",
     "@remix-run/css-bundle": "^2.0.1",
     "@remix-run/react": "^2.0.1",
+    "clsx": "^2.0.0",
     "drizzle-orm": "^0.28.6",
     "isbot": "^3.6.8",
     "react": "^18.2.0",

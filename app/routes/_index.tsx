@@ -5,6 +5,7 @@ import type {
   MetaFunction,
 } from '@remix-run/cloudflare'
 import { useFetcher, useLoaderData } from '@remix-run/react'
+import { Message } from '~/components/message'
 import { generateAiResponse } from '~/utils/ai.server'
 import { addMessage, getMessages } from '~/utils/db.server'
 
@@ -30,6 +31,7 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 export default function Index() {
   const { messages } = useLoaderData<typeof loader>()
   const fetcher = useFetcher()
+  const prompt = fetcher.formData?.get('prompt')
 
   return (
     <div>
@@ -37,16 +39,11 @@ export default function Index() {
         <button type="submit">Reset chat</button>
       </fetcher.Form>
       {messages.map((message) => (
-        <p
-          key={message.id}
-          style={{ backgroundColor: message.isUser ? '#fff' : '#ebebeb' }}
-        >
-          {message.message}
-        </p>
+        <Message key={message.id} message={message} />
       ))}
-      {fetcher.state !== 'idle' && (
+      {fetcher.state !== 'idle' && typeof prompt === 'string' && (
         <>
-          <p>{String(fetcher.formData?.get('prompt'))}</p>
+          <Message message={{ id: 0, message: prompt, isUser: true }} />
           <p>loading...</p>
         </>
       )}
