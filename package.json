@@ -7,7 +7,9 @@
     "build": "remix build",
     "deploy": "wrangler deploy",
     "dev": "remix dev --manual -c \"npm start\"",
-    "start": "wrangler dev --remote ./build/index.js",
+    "dev:remote": "remix dev --manual -c \"npm start:remote\"",
+    "start": "wrangler dev ./build/index.js",
+    "start:remote": "wrangler dev --remote ./build/index.js",
     "typecheck": "tsc",
     "generate": "drizzle-kit generate:sqlite --schema=./app/schema.ts --out=./migrations"
   },
