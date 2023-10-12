@@ -3,6 +3,8 @@
   height: 1.5rem;
   background-color: #171717;
   animation: blink 0.8s infinite;
+  display: inline-block;
+    vertical-align: text-bottom;
 }
 
 @keyframes blink {

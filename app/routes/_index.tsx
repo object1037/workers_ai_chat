@@ -5,6 +5,7 @@ import type {
   MetaFunction,
 } from '@remix-run/cloudflare'
 import { useFetcher, useLoaderData } from '@remix-run/react'
+import { useEffect, useRef } from 'react'
 import { Caret } from '~/components/caret'
 import { Message } from '~/components/message'
 import { generateAiResponse } from '~/utils/ai.server'
@@ -34,6 +35,11 @@ export default function Index() {
   const fetcher = useFetcher()
   const prompt = fetcher.formData?.get('prompt')
 
+  const formRef = useRef<HTMLFormElement>(null)
+  useEffect(() => {
+    formRef.current?.reset()
+  }, [fetcher.state])
+
   return (
     <div>
       <fetcher.Form method="post" action="/reset">
@@ -52,8 +58,8 @@ export default function Index() {
           </Message>
         </>
       )}
-      <fetcher.Form method="post">
-        <input type="text" name="prompt" />
+      <fetcher.Form method="post" ref={formRef}>
+        <input type="text" name="prompt" disabled={fetcher.state !== 'idle'} />
       </fetcher.Form>
     </div>
   )
