@@ -1,4 +1,4 @@
-name = "remix-cloudflare-workers"
+name = "chat"
 
 workers_dev = true
 main = "./build/index.js"
