@@ -7,6 +7,7 @@ import type {
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { LuSendHorizonal } from 'react-icons/lu'
+import Markdown from 'react-markdown'
 import { Caret } from '~/components/caret'
 import { Message } from '~/components/message'
 import { generateAiResponse } from '~/utils/ai.server'
@@ -50,7 +51,7 @@ export default function Index() {
       </fetcher.Form>
       {messages.map((message) => (
         <Message key={message.id} isUser={message.isUser}>
-          {message.message}
+          <Markdown>{message.message}</Markdown>
         </Message>
       ))}
       {fetcher.state !== 'idle' && typeof prompt === 'string' && (

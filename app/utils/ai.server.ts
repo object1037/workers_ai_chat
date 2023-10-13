@@ -7,7 +7,15 @@ export const generateAiResponse = async (
   isDev: boolean
 ) => {
   if (isDev) {
-    return 'This is a test response'
+    return `
+This is a test response
+- hello
+- world
+
+\`\`\`javascript
+console.log("hi")
+\`\`\`
+`
   }
 
   const ai = new Ai(AiBinding)
