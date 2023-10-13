@@ -3,8 +3,13 @@ import { Ai } from '@cloudflare/ai'
 export const generateAiResponse = async (
   AiBinding: any,
   context: string,
-  prompt: string
+  prompt: string,
+  isDev: boolean
 ) => {
+  if (isDev) {
+    return 'This is a test response'
+  }
+
   const ai = new Ai(AiBinding)
 
   const systemPrompt =

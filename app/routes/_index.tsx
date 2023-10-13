@@ -21,6 +21,7 @@ export const meta: MetaFunction = () => {
 export interface Env {
   AI: any
   DB: D1Database
+  CF_ENV?: string
 }
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
@@ -76,7 +77,12 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   const chatContext = (await getMessages(env.DB))
     .map((message) => `${message.isUser ? 'user' : 'ai'}: ${message.message}`)
     .join('\n')
-  const aiResponse = await generateAiResponse(env.AI, chatContext, body.prompt)
+  const aiResponse = await generateAiResponse(
+    env.AI,
+    chatContext,
+    body.prompt,
+    env.CF_ENV === 'dev'
+  )
 
   if (typeof aiResponse !== 'string') {
     throw new Response('Invalid AI response', { status: 500 })
