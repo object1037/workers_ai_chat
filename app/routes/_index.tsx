@@ -49,23 +49,25 @@ export default function Index() {
       <fetcher.Form method="post" action="/reset">
         <button type="submit">Reset chat</button>
       </fetcher.Form>
-      {messages.map((message) => (
-        <Message key={message.id} isUser={message.isUser}>
-          <Markdown>{message.message}</Markdown>
-        </Message>
-      ))}
-      {fetcher.state !== 'idle' && typeof prompt === 'string' && (
-        <>
-          <Message isUser={true}>{prompt}</Message>
-          <Message isUser={false}>
-            <Caret />
+      <div style={{ marginBottom: '12rem' }}>
+        {messages.map((message) => (
+          <Message key={message.id} isUser={message.isUser}>
+            <Markdown>{message.message}</Markdown>
           </Message>
-        </>
-      )}
+        ))}
+        {fetcher.state !== 'idle' && typeof prompt === 'string' && (
+          <>
+            <Message isUser={true}>{prompt}</Message>
+            <Message isUser={false}>
+              <Caret />
+            </Message>
+          </>
+        )}
+      </div>
       <fetcher.Form method="post" ref={formRef} className={inputStyle.root}>
-        <input
-          type="text"
+        <textarea
           required
+          rows={1}
           name="prompt"
           disabled={fetcher.state !== 'idle'}
           className={inputStyle.input}
