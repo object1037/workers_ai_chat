@@ -64,22 +64,24 @@ export default function Index() {
           </>
         )}
       </div>
-      <fetcher.Form method="post" ref={formRef} className={inputStyle.root}>
-        <textarea
-          required
-          rows={1}
-          name="prompt"
-          disabled={fetcher.state !== 'idle'}
-          className={inputStyle.input}
-        />
-        <button
-          type="submit"
-          disabled={fetcher.state !== 'idle'}
-          className={inputStyle.button}
-        >
-          <LuSendHorizonal />
-        </button>
-      </fetcher.Form>
+      <div className={inputStyle.wrapper}>
+        <fetcher.Form method="post" ref={formRef} className={inputStyle.form}>
+          <textarea
+            required
+            rows={1}
+            name="prompt"
+            disabled={fetcher.state !== 'idle'}
+            className={inputStyle.input}
+          />
+          <button
+            type="submit"
+            disabled={fetcher.state !== 'idle'}
+            className={inputStyle.button}
+          >
+            <LuSendHorizonal />
+          </button>
+        </fetcher.Form>
+      </div>
     </div>
   )
 }
