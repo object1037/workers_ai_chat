@@ -13,6 +13,7 @@ import { Message } from '~/components/message'
 import { generateAiResponse } from '~/utils/ai.server'
 import { addMessage, getMessages } from '~/utils/db.server'
 import inputStyle from '~/styles/input.module.css'
+import { handleKeyDown } from '~/utils/keydown'
 
 export const meta: MetaFunction = () => {
   return [
@@ -42,6 +43,7 @@ export default function Index() {
   const formRef = useRef<HTMLFormElement>(null)
   useEffect(() => {
     formRef.current?.reset()
+    window.scrollTo(0, document.body.scrollHeight)
   }, [fetcher.state])
 
   return (
@@ -65,7 +67,12 @@ export default function Index() {
         )}
       </div>
       <div className={inputStyle.wrapper}>
-        <fetcher.Form method="post" ref={formRef} className={inputStyle.form}>
+        <fetcher.Form
+          method="post"
+          ref={formRef}
+          className={inputStyle.form}
+          onKeyDown={(e) => handleKeyDown(e, fetcher)}
+        >
           <textarea
             required
             rows={1}
