@@ -8,6 +8,7 @@ import { useFetcher, useLoaderData } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { LuSendHorizonal } from 'react-icons/lu'
 import Markdown from 'react-markdown'
+import TextareaAutosize from 'react-textarea-autosize'
 import { Caret } from '~/components/caret'
 import { Message } from '~/components/message'
 import { generateAiResponse } from '~/utils/ai.server'
@@ -41,8 +42,10 @@ export default function Index() {
   const prompt = fetcher.formData?.get('prompt')
 
   const formRef = useRef<HTMLFormElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
   useEffect(() => {
     formRef.current?.reset()
+    textareaRef.current?.focus()
     window.scrollTo(0, document.body.scrollHeight)
   }, [fetcher.state])
 
@@ -73,12 +76,15 @@ export default function Index() {
           className={inputStyle.form}
           onKeyDown={(e) => handleKeyDown(e, fetcher)}
         >
-          <textarea
+          <TextareaAutosize
             required
             rows={1}
+            maxRows={7}
             name="prompt"
             disabled={fetcher.state !== 'idle'}
             className={inputStyle.input}
+            ref={textareaRef}
+            placeholder="Type something. [Shift]+[Enter] to submit."
           />
           <button
             type="submit"
