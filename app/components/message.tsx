@@ -1,4 +1,4 @@
-import styles from './message.module.css'
+import styles from '~/styles/message.module.css'
 import { clsx } from 'clsx'
 
 export const Message = ({

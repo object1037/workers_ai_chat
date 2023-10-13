@@ -10,6 +10,7 @@ import { Caret } from '~/components/caret'
 import { Message } from '~/components/message'
 import { generateAiResponse } from '~/utils/ai.server'
 import { addMessage, getMessages } from '~/utils/db.server'
+import inputStyle from '~/styles/input.module.css'
 
 export const meta: MetaFunction = () => {
   return [
@@ -60,7 +61,12 @@ export default function Index() {
         </>
       )}
       <fetcher.Form method="post" ref={formRef}>
-        <input type="text" name="prompt" disabled={fetcher.state !== 'idle'} />
+        <input
+          type="text"
+          name="prompt"
+          disabled={fetcher.state !== 'idle'}
+          className={inputStyle.root}
+        />
       </fetcher.Form>
     </div>
   )
