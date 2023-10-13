@@ -6,6 +6,7 @@ import type {
 } from '@remix-run/cloudflare'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
+import { LuSendHorizonal } from 'react-icons/lu'
 import { Caret } from '~/components/caret'
 import { Message } from '~/components/message'
 import { generateAiResponse } from '~/utils/ai.server'
@@ -60,13 +61,21 @@ export default function Index() {
           </Message>
         </>
       )}
-      <fetcher.Form method="post" ref={formRef}>
+      <fetcher.Form method="post" ref={formRef} className={inputStyle.root}>
         <input
           type="text"
+          required
           name="prompt"
           disabled={fetcher.state !== 'idle'}
-          className={inputStyle.root}
+          className={inputStyle.input}
         />
+        <button
+          type="submit"
+          disabled={fetcher.state !== 'idle'}
+          className={inputStyle.button}
+        >
+          <LuSendHorizonal />
+        </button>
       </fetcher.Form>
     </div>
   )
@@ -76,7 +85,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   const env = context.env as Env
   const body = Object.fromEntries(await request.formData())
 
-  if (typeof body.prompt !== 'string') {
+  if (typeof body.prompt !== 'string' || body.prompt.trim() === '') {
     throw new Response('Invalid prompt', { status: 400 })
   }
 

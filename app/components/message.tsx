@@ -1,5 +1,5 @@
 import styles from '~/styles/message.module.css'
-import { clsx } from 'clsx'
+import { LuBrainCircuit, LuUser } from 'react-icons/lu'
 
 export const Message = ({
   isUser,
@@ -9,9 +9,13 @@ export const Message = ({
   children: React.ReactNode
 }) => {
   return (
-    <div className={clsx(styles.root, isUser ? styles.user : styles.ai)}>
-      <div className={styles.icon}>{isUser ? '🤓' : '🧠'}</div>
-      <p className={styles.message}>{children}</p>
+    <div className={isUser ? styles.user : styles.ai}>
+      <div className={styles.root}>
+        <div className={styles.icon}>
+          {isUser ? <LuUser /> : <LuBrainCircuit />}
+        </div>
+        <p className={styles.message}>{children}</p>
+      </div>
     </div>
   )
 }
