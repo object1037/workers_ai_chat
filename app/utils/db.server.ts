@@ -24,12 +24,27 @@ export const addMessage = async (
 
 export const resetChat = async (db_binding: D1Database, chatId: number) => {
   const db = drizzle(db_binding)
-  const result = await db.delete(message).where(eq(message.chatId, chatId))
+  const messageResult = await db
+    .delete(message)
+    .where(eq(message.chatId, chatId))
+  if (!messageResult.success) {
+    return messageResult
+  }
+  const result = await db.delete(chat).where(eq(chat.id, chatId))
   return result
 }
 
 export const addChat = async (db_binding: D1Database, name: string) => {
   const db = drizzle(db_binding)
-  const result = await db.insert(chat).values({ name })
+  const result = await db
+    .insert(chat)
+    .values({ name })
+    .returning({ insertedId: chat.id })
+  return result
+}
+
+export const getChats = async (db_binding: D1Database) => {
+  const db = drizzle(db_binding)
+  const result = await db.select().from(chat)
   return result
 }
