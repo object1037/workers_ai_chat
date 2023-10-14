@@ -15,11 +15,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useFetcher,
   useLoaderData,
 } from '@remix-run/react'
 import { addChat, getChats } from './utils/db.server'
 import sidebarStyle from './styles/sidebar.module.css'
-import { LuPlus } from 'react-icons/lu'
+import { LuPlus, LuTrash } from 'react-icons/lu'
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
@@ -39,6 +40,7 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 
 export default function App() {
   const { chats } = useLoaderData<typeof loader>()
+  const fetcher = useFetcher()
 
   return (
     <html
@@ -59,7 +61,7 @@ export default function App() {
         <div style={{ display: 'flex', height: '100%' }}>
           <section className={sidebarStyle.root}>
             {chats.map((chat) => (
-              <div key={chat.id}>
+              <div key={chat.id} style={{ display: 'flex' }}>
                 <Link
                   to={`/chats/${chat.id}`}
                   prefetch="intent"
@@ -67,9 +69,17 @@ export default function App() {
                 >
                   {chat.name}
                 </Link>
+                <fetcher.Form
+                  method="post"
+                  action={`/delete?chatId=${chat.id}`}
+                >
+                  <button type="submit" className={sidebarStyle.altButton}>
+                    <LuTrash />
+                  </button>
+                </fetcher.Form>
               </div>
             ))}
-            <Form method="post" className={sidebarStyle.form}>
+            <Form method="post" style={{ display: 'flex' }}>
               <input type="text" name="name" className={sidebarStyle.input} />
               <button type="submit" className={sidebarStyle.button}>
                 <LuPlus />

@@ -6,7 +6,7 @@ import type {
 import { addMessage, getMessages } from '~/utils/db.server'
 import type { Env } from '~/root'
 import { generateAiResponse } from '~/utils/ai.server'
-import { useFetcher, useLoaderData, useParams } from '@remix-run/react'
+import { useFetcher, useLoaderData } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { Message } from '~/components/message'
 import Markdown from 'react-markdown'
@@ -34,7 +34,6 @@ export default function Chat() {
   const { messages } = useLoaderData<typeof loader>()
   const fetcher = useFetcher()
   const prompt = fetcher.formData?.get('prompt')
-  const params = useParams()
 
   const formRef = useRef<HTMLFormElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -46,9 +45,6 @@ export default function Chat() {
 
   return (
     <div style={{ flex: 1, position: 'relative' }}>
-      <fetcher.Form method="post" action={`/reset?chatId=${params.chatId}`}>
-        <button type="submit">Reset chat</button>
-      </fetcher.Form>
       <div style={{ marginBottom: '12rem', height: '100%', overflow: 'auto' }}>
         {messages.map((message) => (
           <Message key={message.id} isUser={message.isUser}>

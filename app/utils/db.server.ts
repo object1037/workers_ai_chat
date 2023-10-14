@@ -26,7 +26,7 @@ export const addMessage = async (
   return result
 }
 
-export const resetChat = async (db_binding: D1Database, chatId: number) => {
+export const deleteChat = async (db_binding: D1Database, chatId: number) => {
   const db = drizzle(db_binding)
   const messageResult = await db
     .delete(message)

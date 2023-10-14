@@ -1,6 +1,6 @@
 import { type ActionFunctionArgs, redirect } from '@remix-run/cloudflare'
 import type { Env } from '~/root'
-import { resetChat } from '~/utils/db.server'
+import { deleteChat } from '~/utils/db.server'
 
 export const action = async ({
   context,
@@ -13,10 +13,10 @@ export const action = async ({
     return new Response('invalid chat id', { status: 400 })
   }
 
-  const { success } = await resetChat(env.DB, Number(chatId))
+  const { success } = await deleteChat(env.DB, Number(chatId))
 
   if (!success) {
-    return new Response('failed to reset chat', { status: 500 })
+    return new Response('failed to delete chat', { status: 500 })
   }
 
   return redirect('/')
