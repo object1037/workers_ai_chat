@@ -23,7 +23,7 @@ export const loader = async ({ context, params }: LoaderFunctionArgs) => {
   }
   const env = context.env as Env
   const messages = await getMessages(env.DB, Number(chatId))
-  if (messages.length === 0) {
+  if ('error' in messages) {
     throw new Response(null, { status: 404, statusText: 'Chat not found' })
   }
 
@@ -45,11 +45,11 @@ export default function Chat() {
   }, [fetcher.state])
 
   return (
-    <div>
+    <div style={{ flex: 1, position: 'relative' }}>
       <fetcher.Form method="post" action={`/reset?chatId=${params.chatId}`}>
         <button type="submit">Reset chat</button>
       </fetcher.Form>
-      <div style={{ marginBottom: '12rem' }}>
+      <div style={{ marginBottom: '12rem', height: '100%', overflow: 'auto' }}>
         {messages.map((message) => (
           <Message key={message.id} isUser={message.isUser}>
             <Markdown>{message.message}</Markdown>
@@ -63,6 +63,7 @@ export default function Chat() {
             </Message>
           </>
         )}
+        <div style={{ height: '12rem' }} />
       </div>
       <div className={inputStyle.wrapper}>
         <fetcher.Form
@@ -110,7 +111,12 @@ export const action = async ({
     throw new Response('Invalid prompt', { status: 400 })
   }
 
-  const chatContext = (await getMessages(env.DB, Number(chatId)))
+  const messages = await getMessages(env.DB, Number(chatId))
+  if ('error' in messages) {
+    throw new Response(null, { status: 404, statusText: 'Chat not found' })
+  }
+
+  const chatContext = messages
     .map((message) => `${message.isUser ? 'user' : 'ai'}: ${message.message}`)
     .join('\n')
   const aiResponse = await generateAiResponse(

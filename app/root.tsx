@@ -8,6 +8,7 @@ import {
 import { cssBundleHref } from '@remix-run/css-bundle'
 import {
   Form,
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -17,6 +18,8 @@ import {
   useLoaderData,
 } from '@remix-run/react'
 import { addChat, getChats } from './utils/db.server'
+import sidebarStyle from './styles/sidebar.module.css'
+import { LuPlus } from 'react-icons/lu'
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
@@ -38,26 +41,43 @@ export default function App() {
   const { chats } = useLoaderData<typeof loader>()
 
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      style={{
+        height: '100%',
+        fontFamily:
+          'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+      }}
+    >
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body style={{ margin: 0 }}>
-        <section>
-          {chats.map((chat) => (
-            <div key={chat.id}>
-              <a href={`/chats/${chat.id}`}>{chat.name}</a>
-            </div>
-          ))}
-          <Form method="post">
-            <input type="text" name="name" />
-            <button type="submit">Create chat</button>
-          </Form>
-        </section>
-        <Outlet />
+      <body style={{ margin: 0, height: '100%' }}>
+        <div style={{ display: 'flex', height: '100%' }}>
+          <section className={sidebarStyle.root}>
+            {chats.map((chat) => (
+              <div key={chat.id}>
+                <Link
+                  to={`/chats/${chat.id}`}
+                  prefetch="intent"
+                  className={sidebarStyle.link}
+                >
+                  {chat.name}
+                </Link>
+              </div>
+            ))}
+            <Form method="post" className={sidebarStyle.form}>
+              <input type="text" name="name" className={sidebarStyle.input} />
+              <button type="submit" className={sidebarStyle.button}>
+                <LuPlus />
+              </button>
+            </Form>
+          </section>
+          <Outlet />
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

@@ -1,8 +1,9 @@
 .wrapper {
-  background-image: linear-gradient(180deg, transparent, #f5f5f5 50%);
+  background-image: linear-gradient(180deg, transparent, #fafafa 50%);
   width: 100%;
-  position: fixed;
-  padding: 2.5rem 0;
+  position: absolute;
+  padding: 2.5rem 1.25rem;
+  box-sizing: border-box;
   bottom: 0;
 }
 
@@ -10,34 +11,34 @@
   width: 100%;
   display: flex;
   align-items: flex-end;
-    max-width: 64rem;
-    margin: 0 auto;
-  }
-  
-  .input {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    border: solid 1px #e5e5e5;
-    resize: none;
-      font-size: 1rem;
-      line-height: 1.5rem;
-  }
-  
-  .button {
-    padding: 0.75rem;
-    margin-left: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #171717;
-    border-radius: 0.5rem;
-    border: solid 1px #171717;
-    font-size: 1.5rem;
-    color: #e5e5e5;
-  }
-  
-  .button:hover {
-    background-color: #fff;
-    color: #171717;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: solid 1px #e5e5e5;
+  resize: none;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.button {
+  padding: 0.75rem;
+  margin-left: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #171717;
+  border-radius: 0.5rem;
+  border: solid 1px #171717;
+  font-size: 1.5rem;
+  color: #e5e5e5;
+}
+
+.button:hover {
+  background-color: #fff;
+  color: #171717;
 }

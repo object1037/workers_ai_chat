@@ -6,6 +6,10 @@ export type InsertMessage = typeof message.$inferInsert
 
 export const getMessages = async (db_binding: D1Database, chatId: number) => {
   const db = drizzle(db_binding)
+  const chatResult = await db.select().from(chat).where(eq(chat.id, chatId))
+  if (chatResult.length === 0) {
+    return { error: true }
+  }
   const result = await db
     .select()
     .from(message)
