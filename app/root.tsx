@@ -22,6 +22,7 @@ import {
 import { addChat, getChats } from './utils/db.server'
 import sidebarStyle from './styles/sidebar.module.css'
 import { LuPlus, LuTrash } from 'react-icons/lu'
+import { useEffect, useRef } from 'react'
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
@@ -47,6 +48,12 @@ export default function App() {
   const { chats } = useLoaderData<typeof loader>()
   const fetcher = useFetcher()
   const navigation = useNavigation()
+
+  const formRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    formRef.current?.reset()
+  }, [navigation.state])
 
   return (
     <html
@@ -92,8 +99,13 @@ export default function App() {
                 </fetcher.Form>
               </div>
             ))}
-            <Form method="post" style={{ display: 'flex' }}>
-              <input type="text" name="name" className={sidebarStyle.input} />
+            <Form method="post" style={{ display: 'flex' }} ref={formRef}>
+              <input
+                required
+                type="text"
+                name="name"
+                className={sidebarStyle.input}
+              />
               <button type="submit" className={sidebarStyle.button}>
                 <LuPlus />
               </button>
