@@ -8,7 +8,7 @@ import {
 import { cssBundleHref } from '@remix-run/css-bundle'
 import {
   Form,
-  Link,
+  NavLink,
   Links,
   LiveReload,
   Meta,
@@ -17,6 +17,7 @@ import {
   ScrollRestoration,
   useFetcher,
   useLoaderData,
+  useNavigation,
 } from '@remix-run/react'
 import { addChat, getChats } from './utils/db.server'
 import sidebarStyle from './styles/sidebar.module.css'
@@ -41,6 +42,7 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 export default function App() {
   const { chats } = useLoaderData<typeof loader>()
   const fetcher = useFetcher()
+  const navigation = useNavigation()
 
   return (
     <html
@@ -62,13 +64,20 @@ export default function App() {
           <section className={sidebarStyle.root}>
             {chats.map((chat) => (
               <div key={chat.id} style={{ display: 'flex' }}>
-                <Link
+                <NavLink
                   to={`/chats/${chat.id}`}
                   prefetch="intent"
-                  className={sidebarStyle.link}
+                  className={({ isActive, isPending }) => {
+                    const colorStyle = isPending
+                      ? sidebarStyle.linkPending
+                      : isActive
+                      ? sidebarStyle.linkActive
+                      : ''
+                    return `${sidebarStyle.link} ${colorStyle}`
+                  }}
                 >
                   {chat.name}
-                </Link>
+                </NavLink>
                 <fetcher.Form
                   method="post"
                   action={`/delete?chatId=${chat.id}`}
@@ -86,7 +95,21 @@ export default function App() {
               </button>
             </Form>
           </section>
-          <Outlet />
+          <div
+            style={{
+              flex: 1,
+              position: 'relative',
+              ...(navigation.state === 'loading'
+                ? {
+                    opacity: 0.25,
+                    transition: 'opacity 200ms',
+                    transitionDelay: '200ms',
+                  }
+                : {}),
+            }}
+          >
+            <Outlet />
+          </div>
         </div>
         <ScrollRestoration />
         <Scripts />

@@ -44,7 +44,7 @@ export default function Chat() {
   }, [fetcher.state])
 
   return (
-    <div style={{ flex: 1, position: 'relative' }}>
+    <>
       <div style={{ marginBottom: '12rem', height: '100%', overflow: 'auto' }}>
         {messages.map((message) => (
           <Message key={message.id} isUser={message.isUser}>
@@ -87,7 +87,7 @@ export default function Chat() {
           </button>
         </fetcher.Form>
       </div>
-    </div>
+    </>
   )
 }
 
