@@ -2,9 +2,10 @@ import { json } from '@remix-run/cloudflare'
 import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
+  MetaFunction,
 } from '@remix-run/cloudflare'
 import { addMessage, getMessages } from '~/utils/db.server'
-import type { Env } from '~/root'
+import type { Env, loader as chatsLoader } from '~/root'
 import { generateAiResponse } from '~/utils/ai.server'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
@@ -15,6 +16,27 @@ import { Caret } from '~/components/caret'
 import inputStyle from '~/styles/input.module.css'
 import { handleKeyDown } from '~/utils/keydown'
 import { LuSendHorizonal } from 'react-icons/lu'
+
+export const meta: MetaFunction<
+  typeof loader,
+  { root: typeof chatsLoader }
+> = ({ matches }) => {
+  const rootMatch = matches.find((match) => match.id === 'root')
+  if (!rootMatch) {
+    throw new Response('root route not found', { status: 500 })
+  }
+  const chatId = rootMatch.params.chatId
+  if (!chatId || isNaN(Number(chatId))) {
+    throw new Response('invalid chat id', { status: 404 })
+  }
+  const chatName = rootMatch.data.chats.find(
+    (chat) => chat.id === Number(chatId)
+  )?.name
+  return [
+    { title: `${chatName} - Workers AI chat` },
+    { name: 'description', content: 'AI chat app' },
+  ]
+}
 
 export const loader = async ({ context, params }: LoaderFunctionArgs) => {
   const chatId = params.chatId
