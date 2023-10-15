@@ -4,12 +4,17 @@ import { message, chat } from '~/schema'
 
 export type InsertMessage = typeof message.$inferInsert
 
+export const checkChatExists = async (
+  db_binding: D1Database,
+  chatId: number
+) => {
+  const db = drizzle(db_binding)
+  const result = await db.select().from(chat).where(eq(chat.id, chatId))
+  return result.length > 0
+}
+
 export const getMessages = async (db_binding: D1Database, chatId: number) => {
   const db = drizzle(db_binding)
-  const chatResult = await db.select().from(chat).where(eq(chat.id, chatId))
-  if (chatResult.length === 0) {
-    return { error: true }
-  }
   const result = await db
     .select()
     .from(message)

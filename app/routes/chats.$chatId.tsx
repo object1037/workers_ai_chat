@@ -1,19 +1,20 @@
-import { json } from '@remix-run/cloudflare'
+import { defer, json } from '@remix-run/cloudflare'
 import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
 } from '@remix-run/cloudflare'
-import { addMessage, getMessages } from '~/utils/db.server'
+import { addMessage, checkChatExists, getMessages } from '~/utils/db.server'
 import type { Env, loader as chatsLoader } from '~/root'
 import { generateAiResponse } from '~/utils/ai.server'
 import {
+  Await,
   isRouteErrorResponse,
   useFetcher,
   useLoaderData,
   useRouteError,
 } from '@remix-run/react'
-import { useEffect, useRef } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import { Message } from '~/components/message'
 import Markdown from 'react-markdown'
 import TextareaAutosize from 'react-textarea-autosize'
@@ -49,12 +50,13 @@ export const loader = async ({ context, params }: LoaderFunctionArgs) => {
     throw new Response('invalid chat id', { status: 404 })
   }
   const env = context.env as Env
-  const messages = await getMessages(env.DB, Number(chatId))
-  if ('error' in messages) {
+  const messages = getMessages(env.DB, Number(chatId))
+  const chatExists = await checkChatExists(env.DB, Number(chatId))
+  if (!chatExists) {
     throw new Response(null, { status: 404, statusText: 'Chat not found' })
   }
 
-  return json({ messages })
+  return defer({ messages })
 }
 
 export default function Chat() {
@@ -73,11 +75,18 @@ export default function Chat() {
   return (
     <>
       <div style={{ marginBottom: '12rem', height: '100%', overflow: 'auto' }}>
-        {messages.map((message) => (
-          <Message key={message.id} isUser={message.isUser}>
-            <Markdown>{message.message}</Markdown>
-          </Message>
-        ))}
+        <Suspense fallback={<p>loading...</p>}>
+          <Await resolve={messages}>
+            {(messages) =>
+              messages.map((message) => (
+                <Message key={message.id} isUser={message.isUser}>
+                  <Markdown>{message.message}</Markdown>
+                </Message>
+              ))
+            }
+          </Await>
+        </Suspense>
+
         {fetcher.state !== 'idle' && typeof prompt === 'string' && (
           <>
             <Message isUser={true}>{prompt}</Message>
