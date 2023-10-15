@@ -30,7 +30,7 @@
 }
 
 .linkActive:hover {
-  color: inherit;
+  background-color: #3b82f6;
 }
 
 .linkPending {
