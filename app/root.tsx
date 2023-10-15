@@ -25,6 +25,10 @@ import { LuPlus, LuTrash } from 'react-icons/lu'
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
+  {
+    rel: 'stylesheet',
+    href: 'https://cdn.jsdelivr.net/npm/modern-css-reset/dist/reset.min.css',
+  },
 ]
 
 export interface Env {

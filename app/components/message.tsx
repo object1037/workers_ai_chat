@@ -14,7 +14,7 @@ export const Message = ({
         <div className={styles.icon}>
           {isUser ? <LuUser /> : <LuBrainCircuit />}
         </div>
-        <p className={styles.message}>{children}</p>
+        <div>{children}</div>
       </div>
     </div>
   )
