@@ -7,7 +7,12 @@ import type {
 import { addMessage, getMessages } from '~/utils/db.server'
 import type { Env, loader as chatsLoader } from '~/root'
 import { generateAiResponse } from '~/utils/ai.server'
-import { useFetcher, useLoaderData } from '@remix-run/react'
+import {
+  isRouteErrorResponse,
+  useFetcher,
+  useLoaderData,
+  useRouteError,
+} from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { Message } from '~/components/message'
 import Markdown from 'react-markdown'
@@ -162,4 +167,30 @@ export const action = async ({
   const { success } = await addMessage(env.DB, [newMessage, newAiResponse])
 
   return json({ success })
+}
+
+export const ErrorBoundary = () => {
+  const error = useRouteError()
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </div>
+    )
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    )
+  } else {
+    return <h1>Unknown Error</h1>
+  }
 }
