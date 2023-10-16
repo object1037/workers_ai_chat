@@ -87,6 +87,7 @@
   border: solid 1px #171717;
   font-size: 1.5rem;
   color: #e5e5e5;
+  cursor: pointer;
 }
 
 .button:hover {
@@ -105,6 +106,7 @@
   border: solid 1px transparent;
   font-size: 1.5rem;
   color: #a3a3a3;
+  cursor: pointer;
 }
 .altButton:hover {
   background-color: #dc2626;
