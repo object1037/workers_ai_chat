@@ -8,5 +8,13 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Index() {
-  return <p>hello</p>
+  return (
+    <div style={{ padding: '4rem 4rem' }}>
+      <h1 style={{ marginBottom: '1rem' }}>Workers AI chat</h1>
+      <p>
+        Simple AI chat app build with{' '}
+        <a href="https://developers.cloudflare.com/workers-ai/">Workers AI</a>.
+      </p>
+    </div>
+  )
 }
