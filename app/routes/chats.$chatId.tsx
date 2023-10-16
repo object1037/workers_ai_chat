@@ -89,7 +89,9 @@ export default function Chat() {
 
         {fetcher.state !== 'idle' && typeof prompt === 'string' && (
           <>
-            <Message isUser={true}>{prompt}</Message>
+            <Message isUser={true}>
+              <Markdown>{prompt}</Markdown>
+            </Message>
             <Message isUser={false}>
               <Caret />
             </Message>
