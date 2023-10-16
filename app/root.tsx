@@ -99,17 +99,19 @@ export default function App() {
                 </fetcher.Form>
               </div>
             ))}
-            <Form method="post" style={{ display: 'flex' }} ref={formRef}>
-              <input
-                required
-                type="text"
-                name="name"
-                className={sidebarStyle.input}
-              />
-              <button type="submit" className={sidebarStyle.button}>
-                <LuPlus />
-              </button>
-            </Form>
+            <div className={sidebarStyle.formWrapper}>
+              <Form method="post" style={{ display: 'flex' }} ref={formRef}>
+                <input
+                  required
+                  type="text"
+                  name="name"
+                  className={sidebarStyle.input}
+                />
+                <button type="submit" className={sidebarStyle.button}>
+                  <LuPlus />
+                </button>
+              </Form>
+            </div>
           </section>
           <div
             style={{

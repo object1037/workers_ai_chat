@@ -5,6 +5,8 @@
   flex-direction: column;
   border-right: solid 1px #e5e5e5;
   padding: 0.75rem;
+  padding-bottom: 0;
+  overflow: auto;
 }
 
 .link {
@@ -56,6 +58,13 @@
     background-color: #e5e5e5;
     color: inherit;
   }
+}
+.formWrapper {
+  position: sticky;
+  bottom: 0;
+  margin: -0.75rem;
+  padding: 0.75rem;
+  background-color: #fff;
 }
 .input {
   flex: 1;
