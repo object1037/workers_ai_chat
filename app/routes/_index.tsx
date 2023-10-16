@@ -13,7 +13,8 @@ export default function Index() {
       <h1 style={{ marginBottom: '1rem' }}>Workers AI chat</h1>
       <p>
         Simple AI chat app build with{' '}
-        <a href="https://developers.cloudflare.com/workers-ai/">Workers AI</a>.
+        <a href="https://developers.cloudflare.com/workers-ai/">Workers AI</a>.{' '}
+        <a href="https://github.com/object1037/workers_ai_chat">GitHub</a>
       </p>
     </div>
   )
